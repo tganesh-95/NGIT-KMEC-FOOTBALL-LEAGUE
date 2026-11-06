@@ -2,10 +2,14 @@ services:
   - type: web
     name: ngit-kmec-football-league
     runtime: node
+    plan: free
+    region: singapore
     buildCommand: npm ci && npm run build
     startCommand: npm start
     healthCheckPath: /api/teams
     envVars:
+      - key: NODE_ENV
+        value: production
       - key: MONGODB_URI
         sync: false
       - key: ADMIN_PASSWORD_HASH
