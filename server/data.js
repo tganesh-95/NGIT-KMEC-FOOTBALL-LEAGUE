@@ -2,6 +2,7 @@ export const teams = [
   ['ngit-1', 'NGIT 1st Years', 'NGIT', '1st'],
   ['ngit-2', 'NGIT 2nd Years', 'NGIT', '2nd'],
   ['ngit-3', 'NGIT 3rd Years', 'NGIT', '3rd'],
+  ['ngit-4', 'NGIT 4th Years', 'NGIT', '4th'],
   ['kmec-1', 'KMEC 1st Years', 'KMEC', '1st'],
   ['kmec-2', 'KMEC 2nd Years', 'KMEC', '2nd'],
   ['kmec-3', 'KMEC 3rd Years', 'KMEC', '3rd'],
@@ -9,13 +10,34 @@ export const teams = [
 ].map(([teamId, name, institution, year]) => ({ teamId, name, institution, year }));
 
 const fixtures = [
-  ['NGIT 3rd Years', 'KMEC 3rd Years'], ['NGIT 2nd Years', 'KMEC 4th Years'], ['KMEC 1st Years', 'KMEC 2nd Years'],
-  ['NGIT 1st Years', 'KMEC 4th Years'], ['NGIT 2nd Years', 'KMEC 2nd Years'], ['NGIT 3rd Years', 'KMEC 1st Years'],
-  ['KMEC 4th Years', 'KMEC 2nd Years'], ['NGIT 1st Years', 'KMEC 3rd Years'], ['NGIT 2nd Years', 'NGIT 3rd Years'],
-  ['NGIT 1st Years', 'KMEC 2nd Years'], ['KMEC 3rd Years', 'KMEC 1st Years'], ['KMEC 4th Years', 'NGIT 3rd Years'],
-  ['KMEC 3rd Years', 'NGIT 2nd Years'], ['NGIT 1st Years', 'KMEC 1st Years'], ['KMEC 2nd Years', 'NGIT 3rd Years'],
-  ['KMEC 3rd Years', 'KMEC 4th Years'], ['NGIT 1st Years', 'NGIT 3rd Years'], ['KMEC 1st Years', 'NGIT 2nd Years'],
-  ['KMEC 2nd Years', 'KMEC 3rd Years'], ['NGIT 1st Years', 'NGIT 2nd Years'], ['KMEC 1st Years', 'KMEC 4th Years']
+  ['KMEC 2nd Years', 'NGIT 1st Years'],
+  ['NGIT 4th Years', 'KMEC 3rd Years'],
+  ['NGIT 2nd Years', 'KMEC 4th Years'],
+  ['KMEC 1st Years', 'NGIT 3rd Years'],
+  ['NGIT 1st Years', 'NGIT 4th Years'],
+  ['KMEC 3rd Years', 'KMEC 2nd Years'],
+  ['NGIT 3rd Years', 'NGIT 2nd Years'],
+  ['KMEC 4th Years', 'KMEC 1st Years'],
+  ['NGIT 1st Years', 'KMEC 3rd Years'],
+  ['NGIT 4th Years', 'NGIT 2nd Years'],
+  ['KMEC 1st Years', 'KMEC 2nd Years'],
+  ['NGIT 3rd Years', 'KMEC 4th Years'],
+  ['NGIT 1st Years', 'KMEC 1st Years'],
+  ['KMEC 4th Years', 'NGIT 4th Years'],
+  ['NGIT 2nd Years', 'KMEC 3rd Years'],
+  ['KMEC 2nd Years', 'NGIT 4th Years'],
+  ['NGIT 1st Years', 'NGIT 3rd Years'],
+  ['NGIT 1st Years', 'KMEC 4th Years'],
+  ['KMEC 1st Years', 'NGIT 2nd Years'],
+  ['KMEC 4th Years', 'KMEC 2nd Years'],
+  ['NGIT 1st Years', 'NGIT 2nd Years'],
+  ['KMEC 3rd Years', 'NGIT 3rd Years'],
+  ['NGIT 4th Years', 'KMEC 1st Years'],
+  ['NGIT 2nd Years', 'KMEC 2nd Years'],
+  ['NGIT 3rd Years', 'NGIT 4th Years'],
+  ['KMEC 1st Years', 'KMEC 3rd Years'],
+  ['NGIT 3rd Years', 'KMEC 2nd Years'],
+  ['KMEC 4th Years', 'KMEC 3rd Years']
 ];
 
 export const fixtureDocuments = fixtures.map(([team1, team2], index) => ({

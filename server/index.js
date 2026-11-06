@@ -3,18 +3,16 @@ import express from 'express';
 import cors from 'cors';
 import crypto from 'node:crypto';
 import http from 'http';
+import path from 'node:path';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { teams, fixtureDocuments } from './data.js';
 import { Team, Match } from './models.js';
 
 const app = express(); const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 app.use(cors({ origin: true, credentials: true })); app.use(express.json());
-const publicDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../dist');
 
 const adminPassword = process.env.ADMIN_PASSWORD;
 const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
@@ -113,15 +111,22 @@ app.put('/api/matches/:number/status', requireAdmin, async (req, res) => {
   broadcast(); res.json(match);
 });
 
-app.use(express.static(publicDirectory));
-app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api/') || req.path.startsWith('/socket.io/')) return next();
-  res.sendFile(path.join(publicDirectory, 'index.html'));
-});
+app.use(express.static(path.join(process.cwd(), 'dist')));
+app.get('*', (_req, res) => res.sendFile(path.join(process.cwd(), 'dist', 'index.html')));
 
 const seed = async () => {
   await Team.bulkWrite(teams.map(team => ({ updateOne: { filter: { teamId: team.teamId }, update: { $setOnInsert: team }, upsert: true } })));
-  await Match.bulkWrite(fixtureDocuments.map(match => ({ updateOne: { filter: { matchNumber: match.matchNumber }, update: { $setOnInsert: match }, upsert: true } })));
+  const teamNames = new Set(teams.map(team => team.name));
+  const existingMatches = await Match.find({ team1: { $in: [...teamNames] }, team2: { $in: [...teamNames] } }).lean();
+  const preservedByPair = new Map(existingMatches.map(match => [`${match.team1}\u0000${match.team2}`, match]));
+  const matches = fixtureDocuments.map(fixture => {
+    const previous = preservedByPair.get(`${fixture.team1}\u0000${fixture.team2}`);
+    return previous
+      ? { ...fixture, date: previous.date, time: previous.time, venue: previous.venue, team1Score: previous.team1Score, team2Score: previous.team2Score, resultEnteredAt: previous.resultEnteredAt, status: previous.status }
+      : fixture;
+  });
+  await Match.deleteMany({ team1: { $in: [...teamNames] }, team2: { $in: [...teamNames] } });
+  await Match.insertMany(matches);
 };
 const port = process.env.PORT || 5000;
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/ngit-kmec-league', { serverSelectionTimeoutMS: 5000 })
